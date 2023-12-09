@@ -14,6 +14,8 @@ module pong_top(
     input reset,            // btnR
     input [1:0] btnA,        // btnD, btnU
     input [1:0] btnB,
+    output [6:0] seg,
+    output [3:0] an,
     output hsync,           // to VGA Connector
     output vsync,           // to VGA Connector
     output [11:0] rgb       // to DAC, to VGA Connector
@@ -37,8 +39,13 @@ module pong_top(
     wire [3:0] dig0_B, dig1_B;
     reg gra_still, d_inc_A, d_inc_B, d_clr, timer_start;
     wire timer_tick, timer_up;
-    reg [1:0] ball_reg, ball_next;
+    reg [7:0] ball_reg, ball_next;
+    wire [19:0] clk_div;
     
+    assign clk_div[0] = clk;
+    generate for (genvar i=0; i<19; i = i+1) begin
+        clockDivider div1(clk_div[i], clk_div[i+1]);
+    end endgenerate
     
     // Module Instantiations
     vga_controller vga_unit(
@@ -130,12 +137,12 @@ module pong_top(
         
         case(state_reg)
             newgame: begin
-                ball_next = 2'b11;          // three balls
+                ball_next = 8'b11111111;          // three balls
                 d_clr = 1'b1;               // clear score
                 
                 if(btnA != 2'b00 || btnB != 2'b00) begin      // button pressed
                     state_next = play;
-                    //ball_next = ball_reg - 1;    
+                    ball_next = ball_reg - 1;    
                 end
             end
             
@@ -147,8 +154,9 @@ module pong_top(
                 
                 if(hit_B)
                     d_inc_B = 1'b1;   // increment score B
-                
-                else if(miss) begin
+                    
+                else if(miss) 
+                begin
                     if(ball_reg == 0)
                         state_next = over;
                     
@@ -190,5 +198,16 @@ module pong_top(
     
     // output
     assign rgb = rgb_reg;
-    
+
+    sevenSegment segmentController(
+        .clk(clk_div[19]),
+        .num0(dig1_B),
+        .num1(dig0_B),
+        .num2(dig1_A),
+        .num3(dig0_A),
+        .seg_output(seg),
+        .dot(dp),
+        .an(an)
+    );
+
 endmodule

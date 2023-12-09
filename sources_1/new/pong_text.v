@@ -51,15 +51,15 @@ module pong_text(
         4'h3 : char_addr_s = 7'h52;     // R
         4'h4 : char_addr_s = 7'h45;     // E
         4'h5 : char_addr_s = 7'h3A;     // :
-        4'h6 : char_addr_s = {3'b011, dig1_A};     // tens digit
-        4'h7 : char_addr_s = {3'b011, dig0_A};     // ones digit
+        4'h6 : char_addr_s = {3'b011, dig1_B};     // tens digit
+        4'h7 : char_addr_s = {3'b011, dig0_B};     // ones digit
         4'h8 : char_addr_s = 7'h00;     //
         4'h9 : char_addr_s = 7'h00;     //
         4'hA : char_addr_s = 7'h00;     // 
         4'hB : char_addr_s = 7'h00;     // 
         4'hC : char_addr_s = 7'h00;     // 
-        4'hD : char_addr_s = {3'b011, dig1_B};     // 
-        4'hE : char_addr_s = {3'b011, dig0_B};     // 
+        4'hD : char_addr_s = {3'b011, dig1_A};     // 
+        4'hE : char_addr_s = {3'b011, dig0_A};     // 
         4'hF : char_addr_s = 7'h00;     //
     endcase
     

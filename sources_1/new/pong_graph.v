@@ -63,8 +63,8 @@ module pong_graph
 
     /////////////////////////////////////////////////// PADDLE Player B
     // paddle horizontal boundaries
-    parameter X_PAD_L_B = 100;
-    parameter X_PAD_R_B = 103;    // 4 pixels wide
+    parameter X_PAD_L_B = 50;
+    parameter X_PAD_R_B = 53;    // 4 pixels wide
     // paddle vertical boundary signals
     wire [9:0] y_pad_t_B, y_pad_b_B;
     // register to track top boundary and buffer
