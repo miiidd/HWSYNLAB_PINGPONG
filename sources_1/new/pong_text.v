@@ -187,14 +187,14 @@ module pong_text(
     
     // mux for ascii ROM addresses and rgb
     always @* begin
-        text_rgb = 12'h0FF;     // aqua background
+        text_rgb = 12'hC9F;     // aqua background
         
         if(score_on) begin
             char_addr = char_addr_s;
             row_addr = row_addr_s;
             bit_addr = bit_addr_s;
             if(ascii_bit)
-                text_rgb = 12'hF00; // red
+                text_rgb = 12'hFF0; // red
         end
         
         else if(rule_on) begin
@@ -202,7 +202,7 @@ module pong_text(
             row_addr = row_addr_r;
             bit_addr = bit_addr_r;
             if(ascii_bit)
-                text_rgb = 12'hF00; // red
+                text_rgb = 12'hC9F; // red
         end
         
         else if(logo_on) begin
@@ -210,7 +210,7 @@ module pong_text(
             row_addr = row_addr_l;
             bit_addr = bit_addr_l;
             if(ascii_bit)
-                text_rgb = 12'hFF0; // yellow
+                text_rgb = 12'hC9F; // yellow
         end
         
         else begin // game over

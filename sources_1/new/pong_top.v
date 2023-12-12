@@ -12,8 +12,9 @@
 module pong_top(
     input clk,              // 100MHz
     input reset,            // btnR
-    input [1:0] btnA,        // btnD, btnU
-    input [1:0] btnB,
+    // input [1:0] btnA,       // btnD, btnU
+    // input [1:0] btnB,
+    input RsRx,
     output [6:0] seg,
     output [3:0] an,
     output hsync,           // to VGA Connector
@@ -29,6 +30,9 @@ module pong_top(
            
         
     // signal declaration
+    wire [1:0] btnA;       // btnD, btnU
+    wire [1:0] btnB;
+
     reg [1:0] state_reg, state_next;
     wire [9:0] w_x, w_y;
     wire w_vid_on, w_p_tick, graph_on, hit_A, hit_B, miss;
@@ -47,6 +51,7 @@ module pong_top(
         clockDivider div1(clk_div[i], clk_div[i+1]);
     end endgenerate
     
+
     // Module Instantiations
     vga_controller vga_unit(
         .clk_100MHz(clk),
@@ -108,7 +113,9 @@ module pong_top(
         .dig0_B(dig0_B),
         .dig1_B(dig1_B)
         );
-       
+
+    // UART
+    uart keyBoard1(clk, RsRx, btnA, btnB);
     
     // FSMD state and registers
     always @(posedge clk or posedge reset)
@@ -194,7 +201,7 @@ module pong_top(
                 rgb_next = text_rgb;    // colors in pong_text
                 
             else
-                rgb_next = 12'h0FF;     // aqua background
+                rgb_next = 12'hC9F;     // aqua background
     
     // output
     assign rgb = rgb_reg;
